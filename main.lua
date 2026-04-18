@@ -2547,7 +2547,7 @@ local CoreGui = getService("CoreGui")
 
 -- Interface Management
 
-local NightUI = useStudio and script.Parent:FindFirstChild('NightUI') or game:GetObjects("rbxassetid://10804731440")[1]
+local NightUI = useStudio and script.Parent:FindFirstChild('NightUI')
 local buildAttempts = 0
 local correctBuild = false
 local warned
@@ -2568,7 +2568,7 @@ repeat
 		warned = true
 	end
 
-	toDestroy, NightUI = NightUI, useStudio and script.Parent:FindFirstChild('NightUI') or game:GetObjects("rbxassetid://10804731440")[1]
+	toDestroy, NightUI = NightUI, useStudio and script.Parent:FindFirstChild('NightUI')
 	-- if toDestroy and not useStudio then toDestroy:Destroy() end -- allow multiple windows
 
 	buildAttempts = buildAttempts + 1
@@ -4472,7 +4472,7 @@ function NightUILibrary:CreateWindow(Settings)
 		if useStudio then
 			NightUI = script.Parent:FindFirstChild('NightUI')
 		else
-			NightUI = game:GetObjects("rbxassetid://10804731440")[1]
+			NightUI = script.Parent:FindFirstChild('NightUI')
 		end
 		buildAttempts = buildAttempts + 1
 	until NightUI or buildAttempts >= 2
