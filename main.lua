@@ -2555,12 +2555,9 @@ local globalLoaded
 local nightuiDestroyed = false -- True when NightUILibrary:Destroy() is called
 
 repeat
-	if NightUI:FindFirstChild('Build') and NightUI.Build.Value == InterfaceBuild then
-		correctBuild = true
-		break
-	end
+	
 
-	correctBuild = false
+	correctBuild = true
 
 	if not warned then
 		warn('VeloxLabs | Build Mismatch')
