@@ -2561,7 +2561,7 @@ repeat
 
 	if not warned then
 		warn('VeloxLabs | Build Mismatch')
-		print('NightUI may encounter issues as you are running an incompatible interface version ('.. ((NightUI:FindFirstChild('Build') and NightUI.Build.Value) or 'No Build') ..').\n\nThis version of NightUI is intended for interface build '..InterfaceBuild..'.')
+		print('NightUI may encounter issues as you are running an incompatible interface version.\n\nThis version of NightUI is intended for interface build '..InterfaceBuild..'.')
 		warned = true
 	end
 
