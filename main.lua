@@ -60,7 +60,7 @@ local function loadWithTimeout(url: string, timeout: number?): ...any
 end
 
 local requestsDisabled = true --getgenv and getgenv().DISABLE_NIGHTUI_REQUESTS
-local InterfaceBuild = '3K3W'
+local InterfaceBuild = 'UU2NX'
 local Release = "Build 1.68"
 local NightUIFolder = "NightUI"
 local ConfigurationFolder = NightUIFolder.."/Configurations"
@@ -2547,30 +2547,43 @@ local CoreGui = getService("CoreGui")
 
 -- Interface Management
 
-local NightUI = useStudio and script.Parent:FindFirstChild('NightUI') 
+local NightUI = useStudio and script.Parent:FindFirstChild('NightUI') or game:GetObjects("rbxassetid://10804731440")[1]
 local buildAttempts = 0
-local correctBuild = true
+local correctBuild = false
 local warned
 local globalLoaded
 local nightuiDestroyed = false -- True when NightUILibrary:Destroy() is called
 
 repeat
-	
+	if NightUI:FindFirstChild('Build') and NightUI.Build.Value == InterfaceBuild then
+		correctBuild = true
+		break
+	end
 
 	correctBuild = false
 
 	if not warned then
 		warn('VeloxLabs | Build Mismatch')
-		print('NightUI may encounter issues as you are running an incompatible interface version.\n\nThis version of NightUI is intended for interface build '..InterfaceBuild..'.')
+		print('NightUI may encounter issues as you are running an incompatible interface version ('.. ((NightUI:FindFirstChild('Build') and NightUI.Build.Value) or 'No Build') ..').\n\nThis version of NightUI is intended for interface build '..InterfaceBuild..'.')
 		warned = true
 	end
 
-	toDestroy, NightUI = NightUI, useStudio and script.Parent:FindFirstChild('NightUI') 
+	toDestroy, NightUI = NightUI, useStudio and script.Parent:FindFirstChild('NightUI') or game:GetObjects("rbxassetid://10804731440")[1]
 	-- if toDestroy and not useStudio then toDestroy:Destroy() end -- allow multiple windows
 
 	buildAttempts = buildAttempts + 1
 until buildAttempts >= 2
 
+-- Patch: Remove unsupported UIFlexAlignment properties (e.g. SpaceBetween) for executor compatibility
+for _, desc in ipairs(NightUI:GetDescendants()) do
+	if desc:IsA("UIListLayout") or desc:IsA("UIGridLayout") then
+		pcall(function() desc.HorizontalFlex = Enum.UIFlexAlignment.None end)
+		pcall(function() desc.VerticalFlex = Enum.UIFlexAlignment.None end)
+	end
+	if desc:IsA("UIFlexItem") then
+		pcall(function() desc:Destroy() end)
+	end
+end
 
 NightUI.Enabled = false
 NightUI.Name = "VeloxLabs-"..tostring(math.random(100000,999999))
@@ -4459,7 +4472,7 @@ function NightUILibrary:CreateWindow(Settings)
 		if useStudio then
 			NightUI = script.Parent:FindFirstChild('NightUI')
 		else
-			NightUI =  script.Parent:FindFirstChild('NightUI')
+			NightUI = game:GetObjects("rbxassetid://10804731440")[1]
 		end
 		buildAttempts = buildAttempts + 1
 	until NightUI or buildAttempts >= 2
