@@ -2557,7 +2557,7 @@ local nightuiDestroyed = false -- True when NightUILibrary:Destroy() is called
 repeat
 	
 
-	correctBuild = true
+	correctBuild = false
 
 	if not warned then
 		warn('VeloxLabs | Build Mismatch')
@@ -2571,16 +2571,6 @@ repeat
 	buildAttempts = buildAttempts + 1
 until buildAttempts >= 2
 
--- Patch: Remove unsupported UIFlexAlignment properties (e.g. SpaceBetween) for executor compatibility
-for _, desc in ipairs(NightUI:GetDescendants()) do
-	if desc:IsA("UIListLayout") or desc:IsA("UIGridLayout") then
-		pcall(function() desc.HorizontalFlex = Enum.UIFlexAlignment.None end)
-		pcall(function() desc.VerticalFlex = Enum.UIFlexAlignment.None end)
-	end
-	if desc:IsA("UIFlexItem") then
-		pcall(function() desc:Destroy() end)
-	end
-end
 
 NightUI.Enabled = false
 NightUI.Name = "VeloxLabs-"..tostring(math.random(100000,999999))
