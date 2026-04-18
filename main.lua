@@ -2549,7 +2549,7 @@ local CoreGui = getService("CoreGui")
 
 local NightUI = useStudio and script.Parent:FindFirstChild('NightUI') 
 local buildAttempts = 0
-local correctBuild = false
+local correctBuild = true
 local warned
 local globalLoaded
 local nightuiDestroyed = false -- True when NightUILibrary:Destroy() is called
